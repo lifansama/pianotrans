@@ -1,32 +1,35 @@
-{ lib
-, fetchFromGitHub
-, python3Packages
-, ffmpeg
+{
+  lib,
+  python3,
+  ffmpeg,
 }:
 
-python3Packages.buildPythonApplication rec {
+python3.pkgs.buildPythonApplication {
   pname = "pianotrans";
-  version = "1.0";
+  version = "1.0.1";
+  format = "setuptools";
 
-  src = fetchFromGitHub {
-    owner = "azuwis";
-    repo = pname;
-    rev = "v${version}";
-    sha256 = "sha256-6Otup1Yat1dBZdSoR4lDfpytUQ2RbDXC6ieo835Nw+U=";
-  };
+  src =
+    with lib.fileset;
+    toSource {
+      root = ../../.;
+      fileset = unions [
+        ../../PianoTrans.py
+        ../../setup.py
+      ];
+    };
 
-  propagatedBuildInputs = with python3Packages; [
+  propagatedBuildInputs = with python3.pkgs; [
     piano-transcription-inference
-    pytorch
+    resampy
     tkinter
+    torch
   ];
 
   # Project has no tests
   doCheck = false;
 
-  makeWrapperArgs = [
-    ''--prefix PATH : "${lib.makeBinPath [ ffmpeg ]}"''
-  ];
+  makeWrapperArgs = [ ''--prefix PATH : "${lib.makeBinPath [ ffmpeg ]}"'' ];
 
   meta = with lib; {
     description = "Simple GUI for ByteDance's Piano Transcription with Pedals";

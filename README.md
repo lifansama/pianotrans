@@ -1,5 +1,7 @@
 ## Simple GUI for ByteDance's Piano Transcription with Pedals
 
+[![Test](https://github.com/azuwis/pianotrans/actions/workflows/test.yml/badge.svg)](https://github.com/azuwis/pianotrans/actions/workflows/test.yml)
+
 [ByteDance's Piano Transcription][1] is the PyTorch implementation of the
 piano transcription system, "High-resolution Piano Transcription with Pedals
 by Regressing Onsets and Offsets Times `[1]`".
@@ -27,7 +29,7 @@ Only Windows 10, Debian Linux 10, and macOS 12.1 M1 are tested.
 2. Download and unpack [PianoTrans-v1.0.7z][4] (1.5GB download, unpack using [7zip][5])
 3. Close other apps to free memory, need at least 2G free memory
 4. Run `PianoTrans.exe` in `PianoTrans` directory
-5. Choose audio/video files, hold CTRL to select multiple files
+5. Choose audio/video files, hold `CTRL` to select multiple files
 6. Result MIDI files are in the same directory as the input files
 
 If you want right click menu, run `RightClickMenuRegister.bat`, then you can
@@ -53,7 +55,8 @@ also follow the upstream [install and usage][6] guide for Python pip instead.
    ``` sh
    nix profile install github:azuwis/pianotrans
    ```
-4. Run `pianotrans` to open the GUI, choose audio/video files, hold ⌘ to select multiple files
+4. Run `pianotrans` to open the GUI, choose audio/video files, hold `CTRL`
+   (`⌘` for macOS) to select multiple files
 
 For CLI usage, run `pianotrans file1 file2 ...`.
 
@@ -75,7 +78,22 @@ $ nix profile list
 [5]: https://www.7-zip.org/download.html
 [6]: https://github.com/qiuqiangkong/piano_transcription_inference
 
+### FAQ
+
+Q: Can you improve transcription result?
+
+A: This project is about packaging for https://github.com/bytedance/piano_transcription, as long as it gives you MIDI files, all other issues are out of scope of this project.
+
+You should report to the upstream project here https://github.com/bytedance/piano_transcription/issues
+
 ### Changelog
+
+#### [1.0.1] - 2023-02-09
+
+* Add `--cli` option to force disable GUI
+* Remove filetypes arg from askopenfilenames to avoid crash
+* Update Nix flake, and remove mido/soundfile/torchlibrosa/piano-transcription-inference overlay, all patches accepted in nixpkgs, this means more dependances can be fetched directly from Nix binary cache, less local builds
+* Add github test workflow
 
 #### [1.0] - 2022-02-21
 
